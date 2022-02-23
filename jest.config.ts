@@ -4,6 +4,7 @@ export default {
   },
   moduleNameMapper: {
     '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
+    '^@/(.*)': '<rootDir>/src/main/webapp/app/$1',
   },
   testEnvironment: 'jsdom',
   collectCoverage: true,
@@ -19,5 +20,6 @@ export default {
     },
   },
   modulePathIgnorePatterns: ['<rootDir>/src/main/resources/'],
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   testResultsProcessor: 'jest-sonar-reporter',
 };

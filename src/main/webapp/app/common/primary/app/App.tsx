@@ -1,3 +1,4 @@
+import LoginButton from '@/login/primary/loginButton';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           Jhipster Lite Docs
         </a>
       </header>
+      {/* <LoginButton /> */}
     </div>
   );
 }
