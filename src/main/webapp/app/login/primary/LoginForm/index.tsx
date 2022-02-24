@@ -1,6 +1,6 @@
 import LoginModal from '@/login/primary/LoginModal';
 import { Button } from '@nextui-org/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { LoginModalDataInterface } from '../LoginModal/interface';
 
 const LoginForm = () => {
