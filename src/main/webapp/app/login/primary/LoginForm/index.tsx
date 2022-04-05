@@ -1,11 +1,10 @@
-import LoginModal from '@/login/primary/LoginModal';
 import { Button } from '@nextui-org/react';
 import React, { useState } from 'react';
-import { LoginModalDataInterface } from '../LoginModal/interface';
+
+import LoginModal from '@/login/primary/LoginModal';
 
 const LoginForm = () => {
   const [isOpen, setOpen] = useState(false);
-  const [data, setData] = useState<LoginModalDataInterface>();
 
   const onClickLoginButton = () => {
     setOpen(true);
@@ -20,8 +19,7 @@ const LoginForm = () => {
       <Button auto shadow onClick={onClickLoginButton}>
         Se connecter
       </Button>
-      <LoginModal open={isOpen} onClose={onCloseModal} setData={setData} />
-      {JSON.stringify(data)}
+      <LoginModal open={isOpen} onClose={onCloseModal} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import LoginModal from '@/login/primary/LoginModal';
 import { render, fireEvent, act } from '@testing-library/react';
 
-const LoginModalRender = (open: boolean) => render(<LoginModal open={open} onClose={() => {}} setData={() => {}} />);
+const LoginModalRender = (open: boolean) => render(<LoginModal open={open} onClose={() => {}} />);
 
 describe('test login modal', () => {
   it('describe should render without crashing', () => {
