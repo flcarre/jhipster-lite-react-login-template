@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setLocalStorage } from '@/common/Services/storage';
 
 const LOGIN_URL = 'http://localhost:8080/api/authenticate';
 
@@ -10,9 +11,9 @@ export const login = ({ username, password, rememberMe }: LoginModalDataType) =>
       rememberMe,
     })
     .then(response => {
-      console.log(response);
+      setLocalStorage('token', response.data.id_token);
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
 };
