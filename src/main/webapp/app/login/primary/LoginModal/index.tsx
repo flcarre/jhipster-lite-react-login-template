@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Password, User } from 'react-iconly';
-import { Button, Checkbox, Input, Modal, Spacer, Text } from '@nextui-org/react';
+import { Button, Input, Modal, Spacer, Text } from '@nextui-org/react';
+
+import { login } from '@/login/services/login';
 
 import './LoginModal.scss';
-import { login } from '@/login/services/login';
 
 const LoginModal = ({ open, onClose }: LoginModalType) => {
   const { register, handleSubmit } = useForm();
+  const [error, setError] = useState<boolean>(false);
 
   const onSubmit = (loginData: any) => {
-    login(loginData);
+    if (loginData.username && loginData.password) {
+      login(loginData);
+      setError(false);
+      onClose();
+    } else setError(true);
+  };
+
+  const handleClose = () => {
+    setError(false);
     onClose();
   };
 
   return (
-    <Modal blur open={open} onClose={onClose} aria-labelledby="modal-login">
+    <Modal blur open={open} onClose={handleClose} aria-labelledby="modal-login">
       <Modal.Header>
         <Text size={18}>
           Se connecter à
@@ -53,6 +63,12 @@ const LoginModal = ({ open, onClose }: LoginModalType) => {
             {...register('password')}
           />
           <Spacer y={0.3} />
+          {error && (
+            <Text data-testid="error-message" size={13} color="error">
+              Veuillez remplir les champs ci dessus
+            </Text>
+          )}
+          <Spacer y={1} />
           <input type="checkbox" {...register('rememberMe')} />
           <label>Se souvenir de moi</label>
           <Spacer y={1} />

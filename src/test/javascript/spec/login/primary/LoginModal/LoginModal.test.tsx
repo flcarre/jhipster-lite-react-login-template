@@ -39,7 +39,7 @@ describe('test login modal', () => {
   });
 
   it('render the modal on login button click and close the modal on submit button click', () => {
-    const { getByText, getByLabelText, getByTestId } = LoginModalRender(true);
+    const { getByLabelText, getByTestId } = LoginModalRender(true);
     act(() => {
       fireEvent.change(getByLabelText("Nom d'utilisateur"), {
         target: { value: 'admin' },
@@ -50,5 +50,14 @@ describe('test login modal', () => {
       const submitButton = getByTestId('submit-button');
       fireEvent.click(submitButton);
     });
+  });
+
+  it('should contain error message when submit button is clicked with empty value', async () => {
+    const { getByTestId } = LoginModalRender(true);
+    await act(async () => {
+      const submitButton = getByTestId('submit-button');
+      fireEvent.click(submitButton);
+    });
+    expect(getByTestId('error-message')).toBeTruthy();
   });
 });

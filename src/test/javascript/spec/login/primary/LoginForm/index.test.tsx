@@ -22,4 +22,20 @@ describe('loginForm', () => {
       fireEvent.click(submitButton);
     });
   });
+
+  it('should close when clicking submit button with complete fields', async () => {
+    const { queryByText, getByText, getByLabelText, getByTestId } = render(<LoginForm />);
+    const loginButton = getByText('Se connecter');
+    fireEvent.click(loginButton);
+    await act(async () => {
+      fireEvent.change(getByLabelText("Nom d'utilisateur"), {
+        target: { value: 'admin' },
+      });
+      fireEvent.change(getByLabelText('Mot de passe'), {
+        target: { value: 'admin' },
+      });
+      const submitButton = getByTestId('submit-button');
+      fireEvent.click(submitButton);
+    });
+  });
 });
