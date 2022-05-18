@@ -3,7 +3,7 @@ import { setLocalStorage } from '@/common/Services/storage';
 
 const LOGIN_URL = 'http://localhost:8080/api/authenticate';
 
-export const login = ({ username, password, rememberMe }: LoginModalDataType) => {
+export const login = ({ username, password, rememberMe, setUsername, setToken }: LoginFunctionType) => {
   return axios
     .post(LOGIN_URL, {
       username,
@@ -12,6 +12,9 @@ export const login = ({ username, password, rememberMe }: LoginModalDataType) =>
     })
     .then(response => {
       setLocalStorage('token', response.data.id_token);
+      setLocalStorage('username', username);
+      setUsername(username);
+      setToken(response.data.id_token);
     })
     .catch(error => {
       console.error(error);

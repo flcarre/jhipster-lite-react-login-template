@@ -1,5 +1,10 @@
+import axios from 'axios';
+
 import LoginForm from '@/login/primary/LoginForm/index';
 import { act, fireEvent, render } from '@testing-library/react';
+
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('loginForm', () => {
   it('should render the login button without crashing', () => {
@@ -24,7 +29,15 @@ describe('loginForm', () => {
   });
 
   it('should close when clicking submit button with complete fields', async () => {
-    const { queryByText, getByText, getByLabelText, getByTestId } = render(<LoginForm />);
+    mockedAxios.post.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: {
+          id_token: 123,
+        },
+      })
+    );
+
+    const { getByText, getByLabelText, getByTestId } = render(<LoginForm />);
     const loginButton = getByText('Se connecter');
     fireEvent.click(loginButton);
     await act(async () => {
@@ -37,5 +50,6 @@ describe('loginForm', () => {
       const submitButton = getByTestId('submit-button');
       fireEvent.click(submitButton);
     });
+    expect(mockedAxios.post).toHaveBeenCalledTimes(1);
   });
 });

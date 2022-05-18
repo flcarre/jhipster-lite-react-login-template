@@ -1,10 +1,20 @@
 import { Button } from '@nextui-org/react';
-import React, { useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import LoginModal from '@/login/primary/LoginModal';
+import { getLocalStorage } from '@/common/Services/storage';
+
+export const UserInfoContext = createContext<UserInfoContextType | Record<string, never>>({});
 
 const LoginForm = () => {
   const [isOpen, setOpen] = useState(false);
+  const [username, setUsername] = useState<any>('');
+  const [token, setToken] = useState<any>('');
+
+  const userInfoContextValues = {
+    setUsername,
+    setToken,
+  };
 
   const onClickLoginButton = () => {
     setOpen(true);
@@ -19,7 +29,14 @@ const LoginForm = () => {
       <Button auto shadow onClick={onClickLoginButton}>
         Se connecter
       </Button>
-      <LoginModal open={isOpen} onClose={onCloseModal} />
+      {token && (
+        <p>
+          Bienvenue <strong>{username}</strong> !
+        </p>
+      )}
+      <UserInfoContext.Provider value={userInfoContextValues}>
+        <LoginModal open={isOpen} onClose={onCloseModal} />
+      </UserInfoContext.Provider>
     </div>
   );
 };

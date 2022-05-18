@@ -1,4 +1,9 @@
+import axios from 'axios';
+
 import { login } from '@/login/services/login';
+
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const data = {
   username: 'test',
@@ -6,8 +11,28 @@ const data = {
   rememberMe: true,
 };
 
+const idToken = 123;
+
 describe('login function', () => {
   it('should return a promise', () => {
-    expect(login(data)).toBeInstanceOf(Promise);
+    mockedAxios.post.mockImplementationOnce(() => Promise.reject('error'));
+    const setUsername = jest.fn();
+    const setToken = jest.fn();
+    expect(login({ ...data, setToken, setUsername })).toBeInstanceOf(Promise);
+  });
+
+  it('should set token and username', async () => {
+    mockedAxios.post.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: {
+          id_token: idToken,
+        },
+      })
+    );
+    const setUsername = jest.fn();
+    const setToken = jest.fn();
+    await login({ ...data, setToken, setUsername });
+    expect(setUsername).toHaveBeenCalledWith(data.username);
+    expect(setToken).toHaveBeenCalledWith(idToken);
   });
 });

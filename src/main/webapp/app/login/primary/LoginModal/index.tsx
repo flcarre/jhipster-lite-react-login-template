@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Password, User } from 'react-iconly';
 import { Button, Input, Modal, Spacer, Text } from '@nextui-org/react';
 
 import { login } from '@/login/services/login';
+import { UserInfoContext } from '@/login/primary/LoginForm';
 
 import './LoginModal.scss';
 
 const LoginModal = ({ open, onClose }: LoginModalType) => {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState<boolean>(false);
+  const { setUsername, setToken } = useContext(UserInfoContext);
 
   const onSubmit = (loginData: any) => {
     if (loginData.username && loginData.password) {
-      login(loginData);
+      login({ ...loginData, setUsername, setToken });
       setError(false);
       onClose();
     } else setError(true);
